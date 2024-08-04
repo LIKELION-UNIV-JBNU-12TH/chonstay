@@ -7,12 +7,12 @@ import {MainStackParamList} from '../../navigations/stack/MainStackNavigator';
 import {colors, mainNavigations} from '../../constants';
 import {logout} from '../../api/auth';
 
-type MyPageScreenProps = StackScreenProps<
+type VisitRecordScreenProps = StackScreenProps<
   MainStackParamList,
-  typeof mainNavigations.MYPAGE
+  typeof mainNavigations.VISITRECORD
 >;
 
-function MyPageHomeScreen({navigation}: MyPageScreenProps) {
+function VisitRecordScreen({navigation}: VisitRecordScreenProps) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -23,7 +23,7 @@ function MyPageHomeScreen({navigation}: MyPageScreenProps) {
             source={require('../../assets/Chonstay.png')}
           />
         </View>
-        <Text style={styles.headerText}>마이페이지</Text>
+        <Text style={styles.headerText}>방문 기록</Text>
       </View>
       <Image
         resizeMode="contain"
@@ -32,31 +32,21 @@ function MyPageHomeScreen({navigation}: MyPageScreenProps) {
       />
       <View style={styles.buttonContainer}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>김나무</Text>
+          <Text style={styles.title}>전주 스테이</Text>
         </View>
-        <Text style={styles.contents}>이메일: namu@namu.com</Text>
-        <Text style={styles.contents}>주소: 서울시 동작구 나무동 229-49</Text>
-        <Text style={styles.contents}>나이: 32세</Text>
-        <Text style={styles.contents}>취미: 향도</Text>
-        <CustomButton
-          label="방문 기록"
-          variant="outlinedBlack"
-          onPress={() => navigation.navigate(mainNavigations.VISITRECORD)}
-        />
-        <CustomButton
-          label="개인정보수정"
-          variant="outlinedBlack"
-          onPress={() => navigation.navigate(mainNavigations.EDITPERSONALINFO)}
-        />
-        <CustomButton
-          label="로그아웃"
-          variant="outlinedBlack"
-          onPress={() => logout()}
-        />
+        <Text style={styles.contents}>기간: 8/1~8/5</Text>
+        <Text style={styles.contents}>주최자: 전주시장</Text>
+        <Text style={styles.contents}>리뷰: 없음</Text>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>강원도 소키우기</Text>
+        </View>
+        <Text style={styles.contents}>기간: 5/7~5/12</Text>
+        <Text style={styles.contents}>주최자: 한우매니아</Text>
+        <Text style={styles.contents}>리뷰: 없음</Text>
         <CustomButton
           label="뒤로가기"
           variant="outlinedBlack"
-          onPress={() => navigation.navigate(mainNavigations.HOME)}
+          onPress={() => navigation.navigate(mainNavigations.MYPAGE)}
         />
       </View>
     </SafeAreaView>
@@ -111,4 +101,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MyPageHomeScreen;
+export default VisitRecordScreen;

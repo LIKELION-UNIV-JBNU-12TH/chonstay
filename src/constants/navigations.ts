@@ -10,6 +10,8 @@ const mainNavigations = {
   BOARD: 'Board',
   EDITBOARD: 'EditBoard',
   MYPAGE: 'MyPage',
+  EDITPERSONALINFO: 'EditPersonalInfo',
+  VISITRECORD: 'VisitRecord',
 } as const;
 
 export {authNavigations, mainNavigations};

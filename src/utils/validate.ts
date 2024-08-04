@@ -58,11 +58,19 @@ function validateSignup(values: UserInformation & {passwordConfirm: string}) {
   if (values.password !== values.passwordConfirm) {
     signupErrors.passwordConfirm = '비밀번호가 일치하지 않습니다.';
   }
-  if (values.phoneNumber.length !== 11) {
-    signupErrors.phoneNumber = '휴대폰 번호의 길이가 일치하지 않습니다.';
+  if (
+    !(
+      /[0-9]{3}-[0-9]{4}-[0-9]{4}/.test(values.phoneNumber) ||
+      /[0-9]{2,3}-[0-9]{3}-[0-9]{4}/.test(values.phoneNumber)
+    )
+  ) {
+    signupErrors.phoneNumber = '전화번호의 형식이 일치하지 않습니다.';
   }
   if (!(Number(values.age) > 0 && Number(values.age) <= 120)) {
     signupErrors.age = '나이가 올바르지 않습니다.';
+  }
+  if (!(values.gender == 'Male' || values.gender == 'Female')) {
+    signupErrors.gender = '성별을 선택해주세요.';
   }
   return signupErrors;
 }

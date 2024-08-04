@@ -1,18 +1,18 @@
 import React from 'react';
-import {StyleSheet, View, Text, Dimensions, Image, Button} from 'react-native';
+import {StyleSheet, View, Text, Image, TextInput} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import CustomButton from '../../components/CustomButton';
 import {StackScreenProps} from '@react-navigation/stack';
 import {MainStackParamList} from '../../navigations/stack/MainStackNavigator';
-import {colors, mainNavigations} from '../../constants';
-import {logout} from '../../api/auth';
+import {mainNavigations} from '../../constants';
+import InputField from '../../components/InputField';
 
-type MyPageScreenProps = StackScreenProps<
+type EditPersonalInfoScreenProps = StackScreenProps<
   MainStackParamList,
-  typeof mainNavigations.MYPAGE
+  typeof mainNavigations.EDITPERSONALINFO
 >;
 
-function MyPageHomeScreen({navigation}: MyPageScreenProps) {
+function EditPersonalInfoScreen({navigation}: EditPersonalInfoScreenProps) {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -23,7 +23,7 @@ function MyPageHomeScreen({navigation}: MyPageScreenProps) {
             source={require('../../assets/Chonstay.png')}
           />
         </View>
-        <Text style={styles.headerText}>마이페이지</Text>
+        <Text style={styles.headerText}>개인정보 수정</Text>
       </View>
       <Image
         resizeMode="contain"
@@ -34,29 +34,17 @@ function MyPageHomeScreen({navigation}: MyPageScreenProps) {
         <View style={styles.titleContainer}>
           <Text style={styles.title}>김나무</Text>
         </View>
-        <Text style={styles.contents}>이메일: namu@namu.com</Text>
-        <Text style={styles.contents}>주소: 서울시 동작구 나무동 229-49</Text>
-        <Text style={styles.contents}>나이: 32세</Text>
-        <Text style={styles.contents}>취미: 향도</Text>
-        <CustomButton
-          label="방문 기록"
-          variant="outlinedBlack"
-          onPress={() => navigation.navigate(mainNavigations.VISITRECORD)}
+        <InputField style={styles.contents} value="namu@namu.com" />
+        <InputField
+          style={styles.contents}
+          value="서울시 동작구 나무동 229-49"
         />
-        <CustomButton
-          label="개인정보수정"
-          variant="outlinedBlack"
-          onPress={() => navigation.navigate(mainNavigations.EDITPERSONALINFO)}
-        />
-        <CustomButton
-          label="로그아웃"
-          variant="outlinedBlack"
-          onPress={() => logout()}
-        />
+        <InputField style={styles.contents} value="32" />
+        <InputField style={styles.contents} value="향도" />
         <CustomButton
           label="뒤로가기"
           variant="outlinedBlack"
-          onPress={() => navigation.navigate(mainNavigations.HOME)}
+          onPress={() => navigation.navigate(mainNavigations.MYPAGE)}
         />
       </View>
     </SafeAreaView>
@@ -111,4 +99,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MyPageHomeScreen;
+export default EditPersonalInfoScreen;
