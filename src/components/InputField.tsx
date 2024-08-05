@@ -21,7 +21,13 @@ const deviceHeight = Dimensions.get('screen').height;
 
 const InputField = forwardRef(
   (
-    {disabled = false, error, touched, ...props}: InputFieldProps,
+    {
+      multiline = false,
+      disabled = false,
+      error,
+      touched,
+      ...props
+    }: InputFieldProps,
     ref?: ForwardedRef<TextInput>,
   ) => {
     const innerRef = useRef<TextInput | null>(null);
@@ -37,9 +43,11 @@ const InputField = forwardRef(
             styles.container,
             disabled && styles.disabled,
             touched && Boolean(error) && styles.inputError,
+            multiline && styles.multiline,
           ]}>
           <TextInput
             ref={ref ? mergeRefs(innerRef, ref) : innerRef}
+            multiline={multiline}
             editable={!disabled}
             placeholderTextColor={colors.GRAY_500}
             style={[styles.input, disabled && styles.disabled]}
@@ -62,6 +70,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.GRAY_200,
     padding: deviceHeight > 700 ? 15 : 10,
+  },
+  multiline: {
+    height: 200,
   },
   input: {
     fontSize: 16,

@@ -1,24 +1,31 @@
 import React, {useRef, useState} from 'react';
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import InputField from '../../components/InputField';
 import useForm from '../../hooks/useForm';
 import CustomButton from '../../components/CustomButton';
 import {validateSignup} from '../../utils';
 import {TextInput} from 'react-native-gesture-handler';
-import {postSignup} from '../../api/auth';
 import DropDownPicker from 'react-native-dropdown-picker';
+import DatePicker from 'react-native-date-picker';
+import {colors} from '../../constants';
+import useAuth from '../../hooks/queries/useAuth';
+import {pickPlace} from 'react-native-place-picker';
 
 function SignupScreen() {
   const idRef = useRef<TextInput | null>(null);
   const passwordRef = useRef<TextInput | null>(null);
   const passwordConfirmRef = useRef<TextInput | null>(null);
+  const {signupMutation, loginMutation} = useAuth();
   const nameRef = useRef<TextInput | null>(null);
   const phoneNumberRef = useRef<TextInput | null>(null);
   const residenceRef = useRef<TextInput | null>(null);
   const birthRef = useRef<TextInput | null>(null);
   const ageRef = useRef<TextInput | null>(null);
-  const [open, setOpen] = useState(false);
+  const [address, setAddress] = useState('주소를 선택하세요...');
+  const [date, setDate] = useState(new Date());
+  const [openDate, setOpenDate] = useState(false);
+  const [openGender, setOpenGender] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
     {label: '남성', value: 'Male'},
@@ -32,7 +39,7 @@ function SignupScreen() {
       password: '',
       passwordConfirm: '',
       name: '',
-      phoneNumber: '',
+      phonenumber: '',
       residence: '',
       birth: '',
       age: '',
@@ -42,7 +49,29 @@ function SignupScreen() {
   });
 
   const handleSubmit = () => {
-    postSignup(signup.values);
+    const {email, id, password, name, phonenumber, residence, birth, gender} =
+      signup.values;
+
+    const currDate = new Date();
+    const currYear = currDate.getFullYear();
+    const currMonth = currDate.getMonth() + 1;
+    const currDay = currDate.getDate();
+
+    const age = (
+      currYear -
+      date.getFullYear() +
+      1 *
+        Number(
+          currMonth > date.getMonth() + 1 ||
+            (currMonth == date.getMonth() + 1 && currDay >= date.getDate()),
+        ) -
+      1
+    ).toString();
+
+    signupMutation.mutate(
+      {email, id, password, name, phonenumber, residence, birth, age, gender},
+      {onSuccess: () => loginMutation.mutate({id, password})},
+    );
   };
 
   return (
@@ -88,6 +117,7 @@ function SignupScreen() {
             error={signup.errors.passwordConfirm}
             touched={signup.touched.passwordConfirm}
             secureTextEntry
+            returnKeyType="next"
             onSubmitEditing={() => nameRef.current?.focus()}
             {...signup.getTextInputProps('passwordConfirm')}
           />
@@ -96,49 +126,92 @@ function SignupScreen() {
             placeholder="이름"
             error={signup.errors.name}
             touched={signup.touched.name}
+            returnKeyType="next"
             onSubmitEditing={() => phoneNumberRef.current?.focus()}
             {...signup.getTextInputProps('name')}
           />
           <InputField
             ref={phoneNumberRef}
-            placeholder="전화번호"
-            error={signup.errors.phoneNumber}
-            touched={signup.touched.phoneNumber}
+            placeholder="휴대전화 (010-1234-5678)"
+            error={signup.errors.phonenumber}
+            touched={signup.touched.phonenumber}
+            returnKeyType="next"
             onSubmitEditing={() => residenceRef.current?.focus()}
-            {...signup.getTextInputProps('phoneNumber')}
+            {...signup.getTextInputProps('phonenumber')}
           />
           <InputField
             ref={residenceRef}
-            placeholder="주소"
-            error={signup.errors.residence}
+            editable={false}
             touched={signup.touched.residence}
             onSubmitEditing={() => birthRef.current?.focus()}
             {...signup.getTextInputProps('residence')}
+            value={address}
+            onContentSizeChange={() =>
+              signup.handleChangeText('residence', address)
+            }
+          />
+          <CustomButton
+            label="주소 선택"
+            variant="outlined"
+            onPress={() => {
+              pickPlace({
+                enableUserLocation: true,
+                enableGeocoding: true,
+                color: colors.YELLOWGREEN,
+              }).then(res => {
+                if (res.address) {
+                  const location = [
+                    res.address.name,
+                    res.address.city,
+                    res.address.state,
+                    res.address.country,
+                  ].join(', ');
+                  setAddress(location);
+                }
+              });
+            }}
           />
           <InputField
             ref={birthRef}
-            placeholder="생년월일"
+            editable={false}
             error={signup.errors.birth}
             touched={signup.touched.birth}
             onSubmitEditing={() => ageRef.current?.focus()}
             {...signup.getTextInputProps('birth')}
+            value={date.toISOString().split('T')[0]}
+            onContentSizeChange={() => {
+              const dateFormat = date.toISOString().split('T')[0];
+              signup.handleChangeText('birth', dateFormat);
+            }}
           />
-          <InputField
-            ref={ageRef}
-            placeholder="나이"
-            error={signup.errors.age}
-            touched={signup.touched.age}
-            {...signup.getTextInputProps('age')}
+          <CustomButton
+            label="생년월일 선택"
+            variant="outlined"
+            onPress={() => setOpenDate(true)}
+          />
+          <DatePicker
+            modal
+            open={openDate}
+            date={date}
+            mode="date"
+            onConfirm={date => {
+              setOpenDate(false);
+              setDate(date);
+            }}
+            onCancel={() => {
+              setOpenDate(false);
+            }}
           />
           <DropDownPicker
             placeholder="성별"
-            open={open}
+            open={openGender}
             items={items}
-            setOpen={setOpen}
+            setOpen={setOpenGender}
             setValue={setValue}
             setItems={setItems}
             {...signup.getTextInputProps('gender')}
             value={value}
+            style={{borderColor: colors.GRAY_200}}
           />
         </View>
         <CustomButton label="회원가입" onPress={handleSubmit} />

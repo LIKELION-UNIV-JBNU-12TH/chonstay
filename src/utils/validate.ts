@@ -8,7 +8,7 @@ type LoginInformation = {
 type UserInformation = LoginInformation & {
   email: string;
   name: string;
-  phoneNumber: string;
+  phonenumber: string;
   residence: string;
   birth: string;
   age: string;
@@ -41,7 +41,7 @@ function validateSignup(values: UserInformation & {passwordConfirm: string}) {
     passwordConfirm: '',
     email: '',
     name: '',
-    phoneNumber: '',
+    phonenumber: '',
     residence: '',
     birth: '',
     age: '',
@@ -60,11 +60,11 @@ function validateSignup(values: UserInformation & {passwordConfirm: string}) {
   }
   if (
     !(
-      /[0-9]{3}-[0-9]{4}-[0-9]{4}/.test(values.phoneNumber) ||
-      /[0-9]{2,3}-[0-9]{3}-[0-9]{4}/.test(values.phoneNumber)
+      /[0-9]{3}-[0-9]{4}-[0-9]{4}/.test(values.phonenumber) ||
+      /[0-9]{2,3}-[0-9]{3}-[0-9]{4}/.test(values.phonenumber)
     )
   ) {
-    signupErrors.phoneNumber = '전화번호의 형식이 일치하지 않습니다.';
+    signupErrors.phonenumber = '전화번호의 형식이 일치하지 않습니다.';
   }
   if (!(Number(values.age) > 0 && Number(values.age) <= 120)) {
     signupErrors.age = '나이가 올바르지 않습니다.';

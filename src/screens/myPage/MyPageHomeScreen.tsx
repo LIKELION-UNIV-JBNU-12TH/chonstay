@@ -6,6 +6,7 @@ import {StackScreenProps} from '@react-navigation/stack';
 import {MainStackParamList} from '../../navigations/stack/MainStackNavigator';
 import {colors, mainNavigations} from '../../constants';
 import {logout} from '../../api/auth';
+import useAuth from '../../hooks/queries/useAuth';
 
 type MyPageScreenProps = StackScreenProps<
   MainStackParamList,
@@ -13,6 +14,8 @@ type MyPageScreenProps = StackScreenProps<
 >;
 
 function MyPageHomeScreen({navigation}: MyPageScreenProps) {
+  const {logoutMutation} = useAuth();
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -51,7 +54,7 @@ function MyPageHomeScreen({navigation}: MyPageScreenProps) {
         <CustomButton
           label="로그아웃"
           variant="outlinedBlack"
-          onPress={() => logout()}
+          onPress={() => logoutMutation.mutate(null)}
         />
         <CustomButton
           label="뒤로가기"

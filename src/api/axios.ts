@@ -1,8 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL:
-    'https://Springboot-developer-env.eba-vvwtgdrj.ap-northeast-2.elasticbeanstalk.com',
+  baseURL: 'http://43.201.104.222:5000',
   withCredentials: true,
 });
 

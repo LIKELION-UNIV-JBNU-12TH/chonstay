@@ -9,7 +9,7 @@ type SignupUser = {
   password: string;
   email: string;
   name: string;
-  phoneNumber: string;
+  phonenumber: string;
   residence: string;
   birth: string;
   age: string;
@@ -26,25 +26,26 @@ const postSignup = async ({
   password,
   email,
   name,
-  phoneNumber,
+  phonenumber,
   residence,
   birth,
   age,
   gender,
 }: SignupUser): Promise<void> => {
-  const {data} = await axiosInstance.post('/register', {
+  console.log('AAA');
+  const tmp = await axiosInstance.post('/register', {
     id,
     password,
     email,
     name,
-    phoneNumber,
+    phonenumber,
     residence,
     birth,
     age,
     gender,
   });
 
-  return data;
+  return;
 };
 
 type ResponseToken = {

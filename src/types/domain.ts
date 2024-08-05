@@ -30,7 +30,7 @@ interface Profile {
   id: number;
   email: string;
   name: string;
-  phoneNumber: string;
+  phonenumber: string;
   residence: string;
   birth: string;
   age: number;
