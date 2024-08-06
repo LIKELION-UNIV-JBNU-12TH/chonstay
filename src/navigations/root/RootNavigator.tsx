@@ -4,6 +4,7 @@ import MainStackNavigator from '../stack/MainStackNavigator';
 
 function RootNavigator() {
   const {isLogin} = useAuth();
+  // const isLogin = true;
 
   return <>{isLogin ? <MainStackNavigator /> : <AuthStackNavigator />}</>;
 }

@@ -32,18 +32,22 @@ const postSignup = async ({
   age,
   gender,
 }: SignupUser): Promise<void> => {
-  console.log('AAA');
-  const tmp = await axiosInstance.post('/register', {
-    id,
-    password,
-    email,
-    name,
-    phonenumber,
-    residence,
-    birth,
-    age,
-    gender,
-  });
+  await axiosInstance
+    .post('/register', {
+      id,
+      password,
+      email,
+      name,
+      phonenumber,
+      residence,
+      birth,
+      age,
+      gender,
+    })
+    .then(res => console.log(res))
+    .catch(err => {
+      console.log(err);
+    });
 
   return;
 };
