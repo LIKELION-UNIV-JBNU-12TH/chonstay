@@ -1,5 +1,5 @@
-import React, {useRef, useState} from 'react';
-import {Text, StyleSheet, View, SafeAreaView, TextInput} from 'react-native';
+import React, {useRef} from 'react';
+import {StyleSheet, View, SafeAreaView, TextInput} from 'react-native';
 import InputField from '../../components/InputField';
 import CustomButton from '../../components/CustomButton';
 import useForm from '../../hooks/useForm';
@@ -17,7 +17,7 @@ function LoginScreen() {
     validate: validateLogin,
   });
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     loginMutation.mutate(login.values);
   };
 
